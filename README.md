@@ -1,6 +1,6 @@
 # OIPs
 
-Like OIPs for Ethereum, OIPs stands for Olympus Labs improvement proposals. It includes core protocol specifications, client APIs, and contract standards.
+Like EIPs for Ethereum, OIPs stands for Olympus Labs improvement proposals. It includes core protocol specifications, client APIs, and contract standards.
 
 # OIP status terms
 
