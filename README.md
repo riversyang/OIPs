@@ -15,4 +15,4 @@ Like EIPs for Ethereum, OIPs stands for Olympus Labs improvement proposals. It i
 
 | Number                                    | Title                             | Author      | Layer         | Status   |
 | ----------------------------------------- | --------------------------------- | ----------- | ------------- | -------- |
-| [1](https://github.com/Olympus-Labs/OIPs) | Index Product Architecture Design | Jerome Chen | Core Protocol | Accepted |
+| [1](https://github.com/Olympus-Labs/OIPs/blob/master/OIPs/oip-1.md) | Index Product Architecture Design | Jerome Chen | Core Protocol | Accepted |
