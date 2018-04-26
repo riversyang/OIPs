@@ -259,7 +259,7 @@ For the indexes, the value for the user is that they can use the smart contract 
 2. Used as a fee on the platform.
    User pay MOT for a fee when interacting with the financial products. A part of this fee will be rewarding the oracles/providers because they give the platform added value. 
 3. Voting process.
-   By holding a certain amount of MOT, the user is permitted to vote on providers/oracles. And the award might have a relationship with the votes. Most likely this possibility on its own is not a goal for users, as it doesn't directly reward them with anything. For this possibility, a rewards mechanism still needs to be researched.
+   By holding a certain amount of MOT, the user would be permitted to vote on providers/oracles.
 4. Buy private strategies.
    The user can unlock certain indexes with MOT. This price in MOT could be decided by the providers for the Strategy Smart Contract. This might involve privacy solutions such as ZK-STARKS or Homomorphic encryption implemented.
 
