@@ -24,27 +24,27 @@ Jerome Chen, Gerdinand Hardeman created: 2018-03-06, last updated: 2018-03-26
 
 Olympus is a groundbreaking financial ecosystem that defines the protocol for cryptocurrency-based financial products. The Olympus ecosystem provides investors with a comprehensive financial marketplace filled with financial products, services, and applications that serve their investment needs. Olympus Labs provides the tools for investors to construct a well-diversified portfolio, to hedge their downside risk, and to make positive returns in all market conditions.
 
-In this document, we will describe the architecture of Index, the first financial product on the platform. Firstly, we will make a high-level design describing the general ideas of the components, then we will go into details for each of the described components, including their roles, responsibilities and how the interactions are done among them.
+In this document, we will describe the architecture of the Index product, the first financial product on the platform. Firstly, we will make a high-level design describing the general ideas of the components, then we will go into details for each of the described components, including their roles, responsibilities, and the interactions amongst the component modules.
 
-Next, we will list possibilities of the usage of MOT token on the platform, advantages and disadvantages. Finally, we will describe some possibilities which might be extended in the near future.
+Next, we will list the potential use cases of the native token of the Olympus Protocol, MOT, and discuss the advantages and disadvantages of these use cases. Finally, we will describe some possibilities which might be extended in the near future.
 
 
 
 ## High Level Design
 
-An index is an indicator or measure of something, and in finance, it typically refers to a statistical measure of change in a securities market. In the case of financial markets, stock and bond market indices consist of a hypothetical portfolio of securities representing a particular market or a segment of it. 
+An index is an indicator or measure of something, and in finance, it typically refers to a statistical measure of change in a securities market. In the case of financial markets, stock and bond market indexes consist of a hypothetical portfolio of securities representing a particular market or a segment of it. 
 
-On Olympus Labs platform, it doesn't exactly mean the index on a traditional platform, instead, it tries to create a different mode of the index based on the blockchain. More specifically, an index on Olympus platform means the combination of different tokens and the weights of them.
+On the Olympus Labs platform, it doesn't exactly mean the index on a traditional platform, instead, it tries to create a different mode of the index based on the blockchain. More specifically, an index on the Olympus platform means the combination of different tokens and their respective weights.
 
-The goals of this design is to make it a product which is:
+The goals of this design is create an architecture that satisfies the following:
 
 1. Scalable
 2. Extensible
-3. Developer friendly.
-4. Decentralized.
-5. DAO.
+3. Developer friendly
+4. Decentralized
+5. DAO
 
-To be able to make goals listed above, the system needs to be designed in a such a flexible/extensible way, that needs to be build with the combination of different components, they are:
+To meet the goals listed above, the system needs to be designed in a flexible/extensible way. Hence the need for modular component design. The main components of the system are the following:
 
 1. Exchange provider and its adapters.
 2. Strategy provider and its clients.
@@ -56,29 +56,27 @@ Their relationships are shown in the diagram below.
 ![Component View](https://raw.githubusercontent.com/Olympus-Labs/OIPs/master/assets/Component%20View.png)
 
 
-
-The general idea is that by using a smart contract as the core and strategy, pricing and exchange as providers to make it fulfils the requirements described above. All the providers should register itself to the core smart contract and all the apps / 3rd-party clients only interact with the core smart contract. In this case, one entrance only for the index product to make the system architecture clearer.
-
+The general concept is to have the core smart contract interact with the other smart contract modules. In this way, the 3rd party clients, such as wallet and applications, can connect with the Olympus Protocol and the entire Olympus Ecosystem by simply interacting with the core smart contract. 
 
 
 ## Component Details
 
 As described above, the system consists of 4 components:
 
-##### Core smart contract
+##### Core Smart Contract
 
-The core smart contract holds the responsibility to accept requests from the end user, calculate requests and split it into multiple requests and distribute them to different parties. It should be the only entrance that end user is aware of and all the other providers should be behind the scene.
+The core smart contract is responsible for calling all of the other smart contracts. It accepts requests from the end user and splits those requests to the relevant smart contracts. The core smart contract should be the only component that the end user interacts with directly. All other processes flow from the core smart contract behind the scenes and does not interact directly with the end user.
 
 For the index product, the main features should include:
 
 1. Retrieving available indexes and their properties. 
-2. Retrieving token prices.
-3. Buying tokens included in an Index from exchanges.
+2. Retrieving token prices and calculating the index price.
+3. Buying tokens included in an index from exchanges or buying the tokenized index.
 4. Cancel the order if it takes too long or the price becomes inappropriate.
-5. Get notified when the order status is changed.
+5. Get notified when the order status changes.
 
 
-So the interface of the core smart contract should look like below:
+So the interface of the core smart contract should look like the following:
 
 ```javascript
 enum ProviderType{
@@ -146,9 +144,9 @@ contract OlymplusLabsCore is Ownable {
 
 ##### Price Smart Contract and oracles
 
-Price smart contract part in the system plays the role of providing prices for tokens to the user as references when buying indexes, it can be extended to providing also the instant value of certain Index in the future.
+The Price Smart Contract plays the role of providing prices for tokens, and therefore the price of the indexes, to the user as references when buying indexes.
 
-It should interact with 2 parts, providing data to the core smart contract and retrieve data feed from its oracles. To the core smart contract, it should tell which tokens are supported and what the prices are, it should also expose its properties like how often the prices get updated. For the oracles, it should public a method for the oracles to feed in.
+This smart contract has two main functions: 1. provide data to the core smart contract and 2. retrieve data feed from its oracles. To the core smart contract, it should deliver the tokens that are supported and their respective prices as well as core properties such as the frequency of price udpate. For the oracles, it should provide a clear method for oracles to integrate. 
 
 ```javascript
 contract PriceProvider is Provider, Ownable {
@@ -169,9 +167,9 @@ contract PriceProvider is Provider, Ownable {
 
 ##### Strategy Smart Contract and clients
 
-The strategy smart contract holds all the strategies provided by different organizations or individual experts. The same as the Price smart contract, it interacts with 2 parties as well, the core smart contract and its clients. 
+The strategy smart contract holds all of the financial products created by  organizations and individual experts. similar to the price smart contract, the strategy smart contract interacts with 2 parties as well, the core smart contract and the financial product creators. 
 
-To the core smart contract, it gives a list of the available strategies and its properties, like if it's private and its price for instance. As for the clients, it exposes an interface for them to control their own strategies according to their expertise and investigations to make the profit maximized.
+To the core smart contract, it gives a list of the available financial products and its properties. As for the financial product cretors, it provides an interface for them to create and manage their financial products.
 
 For now, a strategy consists of:
 
@@ -202,13 +200,13 @@ For strategy editors, it can be extended to different platforms, like Web-based,
 
 
 
-##### Exchange provider and adapters
+##### Exchange Smart Contract and adapters
 
-This part is responsible for handling all the actual order placements on the exchanges. It includes one smart contract and several adapters.
+The exchange smart contract is responsible for handling all of the actual order placements on the exchanges. It includes one smart contract and several adapters.
 
-The smart contract interacts with the core smart contract and the adapters to make sure orders will be correctly processed and put onto exchanges according to cert algorithms. There are 2 kinds of exchanges at this moment, DEX and centralized exchanges. We will be using sub smart contracts to communicate with the DEXes and oracles for the traditional ones.
+This smart contract interacts with the core smart contract and the adapters to make sure orders will be correctly processed and directed to the exchanges according to certain algorithms. There are currently 2 categories of exchanges, Decentralized Exchanges (DEX) and centralized exchanges. We will be using sub smart contracts to communicate with the DEXes and oracles for the centralized exchanges.
 
-The exchange provider should determine which exchange it should take for the order sent from the core smart contract base on price/reputation of the exchanges. It should also have events for when a certain order is placed and for when it's processed/completed. The provider also exposes an interface that if an order takes too long then a user could cancel it manually.
+The exchange provider should distributes the trade orders to the exchanges based on an optimization algorithmn that takes into account factors such as price, market depth, and reputation of the exchange. It should also have events for when a certain order is placed and for when it is processed/completed. The smart contract also provides an interface that allows the user to cancel the order manually if necessary. 
 
 ```javascript
 contract ExchangeProvider is Ownable, Provider {
@@ -247,37 +245,22 @@ The interaction between the components described above and the buying process is
 
 
 
-## Use Of MOT on the platform
+## Use Of MOT in the Olympus Ecosystem
 
-MOT plays a very important role on OlympusLabs platform, there are several possibilities to give the MOT token value.
-
-For the indexes, the value for the user is that they can use the smart contract service to exchange (for example) their Ether into the indexes through all the possible exchange contracts, without having to manually split their money and create accounts on different exchanges and get benefit from the financial experts by following certain strategies. 
-
-1. Permit to buy OL financial products.
-   This is to require the user to have a certain amount of MOT before they are allowed to buy financial products from our platform.
-   It promotes the use of MOT, yet the downside of this is it limits the size of the active community (depending on the on the amount of MOT defined) which can make use of the Olympus platform.
-2. Used as a fee on the platform.
-   User pay MOT for a fee when interacting with the financial products. A part of this fee will be rewarding the oracles/providers because they give the platform added value. 
-3. Voting process.
-   By holding a certain amount of MOT, the user would be permitted to vote on providers/oracles.
-4. Buy private strategies.
-   The user can unlock certain indexes with MOT. This price in MOT could be decided by the providers for the Strategy Smart Contract. This might involve privacy solutions such as ZK-STARKS or Homomorphic encryption implemented.
-
-All of these possibilities can be used together, but the technology required for the last suggestion is still in active development in the blockchain space, so this should be implemented at a later stage. However, this possibility brings much to the table in terms of incentives for the providers to provide more strategies, which in turn attracts more strategy consumers. Similar work on this is being done by the Enigma decentralized Data Marketplace.
-
+MOT (Mount Olympus Tokens) is the native token in the Olympus Ecosystem and plays a very important role. MOT is used as the fee in the Olympus Ecosystem. From the end user perspective, they pay the fee associated with purchasing a financial product using MOT. From the product creators perspective, they receive their fee in the form of MOT. Similarly, price oracles, third party applications, and exchanges, could potentially receive a part of the fee paid by the end user based on their contribution to the Olympus Ecosystem.
 
 
 ## What's Next?
 
-Future is bright and interesting, the architecture we described above is just the beginning. Actually, if we use the epics concept, it should be just the epic 1. For the future there is much more to imagine and to extend:
+If we use the idea of epics to conceptualize the development roadmap, this is epic 1, the beginning. The future holds many more possibilities. 
 
 1. Tokenization.
-   For each index, there is potential to programmatically create a smart contract and make a token to represent this index. When users buy it, a certain amount of these tokens will be transferred into the users' wallet instead of the bought tokens. These tokens will be held/locked into the smart contract that user can actually exchange them back after a certain locking period depending on different strategies.
+   For each index or fund, programmatically create a smart contract and token to represent this index or fund. When users buy it, a certain amount of these tokens will be transferred into the users' wallet instead of the underlyimg tokens. 
 2. DAO
-   It's always interesting to think about how to make the community to grow/develop without too much interference. The key is to create a system with rewarding / punishment mechanisms by using the MOT token.
+   It's always interesting to think about how to grow/develop the community in an organic manner. The key is to create a system with reward / punishment mechanisms by using the MOT token.
 3. Rebalancing.
-   What we have created so far is only buying, in reality, the market changes rapidly, thus it is interesting to think about assets getting rebalanced when certain circumstances change.
-4. Strategy marketplace.
-   Researching different projects require a lot of knowledge and efforts. That deserves respect and needs to be honoured. By paying MOT to the strategy provider, it attracts more professionals to get involved to the Olympus Platform and make the community bigger.
-5. Tooling for strategy organizations/managers.
-   On traditional financial industry, there are a lot of toolings for different parties/roles. However, on the blockchain, these toolings are still very limited. By creating the index product, it makes it possible to touch this market by creating toolings for the organizations/funding managers from different angles.
+   What we have created so far is only buying, and we will be developing the ability for product creators to rebalance their porfolios.
+4. Financial product marketplace.
+   Researching different projects require a lot of knowledge and effort. That deserves respect and needs to be honoured. By paying MOT to the financial product creators, it attracts more professionals to develop on the Olympus Platform.
+5. Tools for product creators.
+  We will be creating a web portal for product creators to easily create and manage their financial products, as well as raise funding for their funds.
