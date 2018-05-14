@@ -256,7 +256,7 @@ If we use the idea of epics to conceptualize the development roadmap, this is ep
 
 1. Tokenization.
    For each index or fund, programmatically create a smart contract and token to represent this index or fund. When users buy it, a certain amount of these tokens will be transferred into the users' wallet instead of the underlyimg tokens. 
-2. DAO
+2. DAO.
    It's always interesting to think about how to grow/develop the community in an organic manner. The key is to create a system with reward / punishment mechanisms by using the MOT token.
 3. Rebalancing.
    What we have created so far is only buying, and we will be developing the ability for product creators to rebalance their porfolios.
