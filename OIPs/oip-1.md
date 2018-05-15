@@ -4,79 +4,106 @@
 
 Jerome Chen, Gerdinand Hardeman created: 2018-03-06, last updated: 2018-03-26
 
-
-
-### 1. Background
-
-### 2. High level design
-
-### 3. Component details.
-
-### 4. Use of MOT token on the platform. 
-
-### 5. What's next?
+Translated by riversyang, last updated: 2018-05-15
 
 
 
+### 1. 背景
+
+### 2. 总体设计
+
+### 3. 组件详情
+
+### 4. 在平台上使用 MOT token
+
+### 5. 后续工作
 
 
-## Background
+
+
+
+## 背景
 
 Olympus is a groundbreaking financial ecosystem that defines the protocol for cryptocurrency-based financial products. The Olympus ecosystem provides investors with a comprehensive financial marketplace filled with financial products, services, and applications that serve their investment needs. Olympus Labs provides the tools for investors to construct a well-diversified portfolio, to hedge their downside risk, and to make positive returns in all market conditions.
+Olympus 是一个突破性的金融生态系统，它为基于加密货币的金融产品定义了一套协议。
+Olympus 生态系统为投资者们提供了一个由金融产品、服务和应用程序所组成的综合性的金融市场。
+Olympus Labs 为投资者们提供了一系列工具，可以用来构建多元化的投资组合，对冲下跌风险，并在所有市场条件下获得积极的回报。
 
 In this document, we will describe the architecture of the Index product, the first financial product on the platform. Firstly, we will make a high-level design describing the general ideas of the components, then we will go into details for each of the described components, including their roles, responsibilities, and the interactions amongst the component modules.
+在本文中，我们将描述指数（Index）产品的架构，它是平台上的第一个金融产品。
+首先，我们将进行总体设计，描述组件的一般思想；然后我们将讨论每个组件的详情，包括它们的角色、职责和组件模块之间的交互。
 
 Next, we will list the potential use cases of the native token of the Olympus Protocol, MOT, and discuss the advantages and disadvantages of these use cases. Finally, we will describe some possibilities which might be extended in the near future.
+接下来，我们将列出 Olympus 协议的原生 token —— MOT 的潜在应用，并讨论这些用例的优点和缺点。
+最后，我们将描述一些可能在不久的将来进行的扩展。
 
 
-
-## High Level Design
+## 总体设计
 
 An index is an indicator or measure of something, and in finance, it typically refers to a statistical measure of change in a securities market. In the case of financial markets, stock and bond market indexes consist of a hypothetical portfolio of securities representing a particular market or a segment of it. 
+指数（index）是指某事物的指标或度量，在金融领域，它通常指证券市场变化的统计度量。
+在金融市场中，股票和债券市场指数是由代表着特定市场或其一部分的假想的证券投资组合所构成的。
 
 On the Olympus Labs platform, it doesn't exactly mean the index on a traditional platform, instead, it tries to create a different mode of the index based on the blockchain. More specifically, an index on the Olympus platform means the combination of different tokens and their respective weights.
+在 Olympus Labs 平台上，我们尝试创建一种基于区块链的崭新模式的指数产品，而不是像在传统平台中那样。
+更具体地说，Olympus 平台上的指数意味着一种由不同 token 和它们各自的权重所构成的组合。
 
 The goals of this design is create an architecture that satisfies the following:
+这种设计的目标是创建一种满足以下条件的架构：
 
-1. Scalable
-2. Extensible
-3. Developer friendly
-4. Decentralized
-5. DAO
+1. 可伸缩（Scalable）
+2. 可扩展（Extensible）
+3. 面向开发者（Developer friendly）
+4. 去中心化（Decentralized）
+5. 去中心化自制组织（DAO）
 
 To meet the goals listed above, the system needs to be designed in a flexible/extensible way. Hence the need for modular component design. The main components of the system are the following:
+为了达到以上目标，系统需要以灵活、可扩展的方式来设计，因而需要将组件模块化。系统中的主要组件有：
 
-1. Exchange provider and its adapters.
-2. Strategy provider and its clients.
-3. Price provider and its oracles.
-4. Core smart contract.
+1. 兑换合约及其适配器（Exchange provider and its adapters）
+2. 策略合约及其客户端（Strategy provider and its clients）
+3. 价格合约及其预言机（Price provider and its oracles）
+4. 核心智能合约（Core smart contract）
 
 Their relationships are shown in the diagram below.
+它们的关系如下图所示。
 
 ![Component View](https://raw.githubusercontent.com/Olympus-Labs/OIPs/master/assets/Component%20View.png)
 
 
 The general concept is to have the core smart contract interact with the other smart contract modules. In this way, the 3rd party clients, such as wallet and applications, can connect with the Olympus Protocol and the entire Olympus Ecosystem by simply interacting with the core smart contract. 
+总体思想就是通过核心智能合约（core smart contract）来与其他智能合约模块进行交互。
+通过这种方式，像钱包、应用程序这样的第三方客户端，就可以通过简单地与核心智能合约交互来与 Olympus 协议和整个 Olympus 生态系统建立联系。
 
 
-## Component Details
+## 组件详情
 
 As described above, the system consists of 4 components:
+如上文锁述，系统由 4 个组件所组成：
 
-##### Core Smart Contract
+##### 核心智能合约（Core Smart Contract）
 
 The core smart contract is responsible for calling all of the other smart contracts. It accepts requests from the end user and splits those requests to the relevant smart contracts. The core smart contract should be the only component that the end user interacts with directly. All other processes flow from the core smart contract behind the scenes and does not interact directly with the end user.
+核心智能合约是来负责调用其他智能合约的，它负责接收最终用户的请求，并将其拆分成对相关智能合约的一批请求。
+核心智能合约应该是最终用户唯一需要直接进行交互的组件。这个场景中从核心智能合约所发出的其他处理过程都不会直接与最终用户交互。
 
 For the index product, the main features should include:
+对于指数（index）产品，其主要特性包括：
 
 1. Retrieving available indexes and their properties. 
 2. Retrieving token prices and calculating the index price.
 3. Buying tokens included in an index from exchanges or buying the tokenized index.
 4. Cancel the order if it takes too long or the price becomes inappropriate.
 5. Get notified when the order status changes.
+1. 获取有效的指数和它们的相关属性
+2. 获取 token 价格并计算指数价格
+3. 从交易所购买指数中包含的特定 token 或者直接购买由 token 构成的指数
+4. 在长时间未购买成功或价格不再合适时取消订单
+5. 当订单状态变动时获得通知
 
 
 So the interface of the core smart contract should look like the following:
+所以核心智能合约的接口应该大致如下：
 
 ```javascript
 enum ProviderType{
@@ -125,15 +152,15 @@ contract OlymplusLabsCore is Ownable {
         Errored,
     }
     
-    // Forward to Strategy smart contract.
+    // 转到策略智能合约
     function getStrategies() public returns (uint[] ids, string[] names, string[] descriptions);
     function getStrategy(string strategyId) public returns (string name, address[] tokens, uint[] weights);
-    // Forward to Price smart contract.
+    // 转到价格智能合约
     function getPrices(uint strategyId) return (uint[] prices);
-    // Send to Exchange smart contract after validation and splitted to sub orders.
+    // 在校验并分割为子订单之后发送到兑换智能合约
     function buyIndex(uint strategyId, uint amountInEther, uint[] stopLimits, address depositAddress) public returns (string orderId);
         
-    // For app/3rd-party clients to check details / status.
+    // 供应用程序、第三方客户端来检查详情或状态
     function getIndexOrder(string orderId) public returns (IndexOrder);
     function getIndexStatus (string orderId) public returns (OrderStatus status);
     function cancelOrder(string orderId) public returns (boolean success);
@@ -142,23 +169,27 @@ contract OlymplusLabsCore is Ownable {
 
 
 
-##### Price Smart Contract and oracles
+##### 价格智能合约及其预言机
 
 The Price Smart Contract plays the role of providing prices for tokens, and therefore the price of the indexes, to the user as references when buying indexes.
+价格智能合约充当了在用户购买指数产品时为其提供 token 价格乃至指数产品价格的角色。
 
 This smart contract has two main functions: 1. provide data to the core smart contract and 2. retrieve data feed from its oracles. To the core smart contract, it should deliver the tokens that are supported and their respective prices as well as core properties such as the frequency of price udpate. For the oracles, it should provide a clear method for oracles to integrate. 
+这个智能合约有两个主要的函数：1、为核心智能合约提供数据；2、从其预言机获取数据。
+它会为核心智能合约提供它所支持的 token 的价格以及诸如价格更新频率这样的关键属性。
+它也给预言机提供了一个明确的函数来更新价格。
 
 ```javascript
 contract PriceProvider is Provider, Ownable {
-    // For now, all price are ETH based.
+    // 目前，所有价格都是基于 ETH 的。
     event PriceUpdated(uint timeUpdated);
     
-    // To core smart contract
+    // 供核心智能合约使用
     function getSupportedTokens() external returns (address[] tokenAddresses);
     function getPrices(address[] tokenAddresses) external returns (uint[] prices);
     function getPrice(address tokenAddress) external returns (uint);
     
-    // TO Oracles. msg.sender is the address of that Oracle.
+    // 供预言机使用。msg.sender 就是预言机合约的地址。
     function updatePrices(address[] tokenAddresses, uint[] prices) external return (boolean success);
 }
 ```
