@@ -1,6 +1,6 @@
 # Olympus Labs: Financial Component Based Architecture Design
 
-Jerome Chen created: 2018-06-14, last updated:2018-06-17
+Jerome Chen created: 2018-06-14, last updated:2018-06-18
 
 ### 1. Background
 
@@ -32,7 +32,7 @@ The overall idea is to have the entire system in different layers, each layer is
 
 #### Layer 2: Core Components
 
- The components are highly reusable ones in all financial products / applications. It starts from the ExchangeComponent, RiskControlComponent, WhitelistComponent to WithdrawComponent, etc. These can be used from different kinds of indices or funds, also the further products on our road map, like lending, options and futures.
+The components are highly reusable ones in all financial products / applications. It starts from the ExchangeComponent, RiskControlComponent, WhitelistComponent to WithdrawComponent, etc. These can be used from different kinds of indices or funds, also the further products on our road map, like lending, options and futures.
 
 #### Layer 3: Financial Protocols
 
