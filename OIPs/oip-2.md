@@ -44,7 +44,7 @@ The components are highly reusable ones in all financial products / applications
 
 The diagram is described as below:
 
-![471529053272_.pic](../assets/Application Layers.jpg)
+![Application Layers](../assets/Application Layers.jpg)
 
 ## Example workflow
 
