@@ -44,7 +44,7 @@ The components are highly reusable ones in all financial products / applications
 
 The diagram is described as below:
 
-![Application Layers](../assets/Application Layers.jpg)
+![Application Layers](../assets/Application-Layers.jpg)
 
 ## Example workflow
 
@@ -62,7 +62,7 @@ Firstly, a financial smart contract developer sees the opportunity of developing
 
 After the fund template becomes available on Olympus Template available, on the Fund manager portal, the fund managers will be able to see its information including descriptive name, supported features, etc. They can choose this template to create their own fund instance after certain confirmation depending on how the fund provides. The fund manager will use the portal to do the operations such as buying / selling / withdrawal, etc.
 
-![Fund Manager](../assets/Fund Manager.png)
+![Fund Manager](../assets/Fund-Manager.png)
 
 When the fund instance is deployed to Ethereum, it registers to Olympus Marketplace, thus it's also available to its potential investors from different clients such as Olympus App / Portal or 3rd-party implementations like wallets. The investors can choose to invest on this fund instance by simply clicking the buy button on the client app / portal, then it interacts with the fund instance itself. Thanks for the base template, it implements the ERC20 standards, so investor automatically gets his fund token back to the address he specified.
 
@@ -74,7 +74,7 @@ Let's take a look what happens from system's respective from different user case
 
 When the fund template is created, it can hold different components and when the fund instance is initialized, the fund communicates with the specific components depending on what the action is. The components are highly reusable and can serve multiple contracts. In this case, the sample fund template uses whitelist, risk-control, withdrawal and exchange components.
 
-![Example investement](../assets/Example investement.png)
+![Example investement](../assets/Example-investement.png)
 
 # Interfaces
 
@@ -82,7 +82,7 @@ Let's take a look at the technical level of how the interfaces are and how a fun
 
 First, all components implement ComponentInterface which basically describes itself, what the name is, which version it is and what it can do.
 
-![Component Interfaces](../assets/Component Interfaces.png)
+![Component Interfaces](../assets/Component-Interfaces.png)
 
 The definition is like below
 
@@ -100,7 +100,7 @@ contract ComponentInterface {
 
 On another hand, a financial product contains its own logic and a set of components. Base on that, we have defined the Derivative 1.0 interface.
 
-![Derivative Interfaces](../assets/Derivative Interfaces.png)
+![Derivative Interfaces](../assets/Derivative-Interfaces.png)
 
 The component container interface enables any contract implements it has the ability to set components dynamically which makes it powerful. Take an example, when a fund is created with a feature with basic monthly fee charged, later on, you want to change it to percentage base on the transaction amount, thanks to this, you just need to call setComponent function to change to another component which supports this and implements the same Chargeable interface.
 
