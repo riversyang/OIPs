@@ -1,6 +1,6 @@
 # Olympus Labs: Financial Component Based Architecture Design
 
-Jerome Chen created: 2018-06-14, last updated:2018-06-18
+Jerome Chen created: 2018-06-14, last updated:2018-06-20
 
 ### 1. Background
 
@@ -44,7 +44,9 @@ The components are highly reusable ones in all financial products / applications
 
 The diagram is described as below:
 
-![Application Layers](../assets/Application-Layers.jpg)
+![Application Layers](../assets/Application-Layers.png)
+
+
 
 ## Example workflow
 
