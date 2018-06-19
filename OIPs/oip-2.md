@@ -20,11 +20,11 @@ Olympus Labs is a blockchain financial ecosystem centered around the Olympus Pro
 
 We provide a web portal, SDKs, and APIs for financial product creators from both tech and non-tech backgrounds to easily create financial products for cryptocurrency investors.
 
-Along with the development of the platform, it turns out the original architecture built before no longer supports the further development of the system, thus we need to have a new architecture of the financial component based, which is highly extensible, reusable and makes developing of financial products much easier.
+Along with the development of the platform, it turns out the [original architecture](https://github.com/Olympus-Labs/OIPs/blob/master/OIPs/oip-1.md) built before no longer supports the further development of the system, thus we need to have a new architecture of the financial component based, which is highly extensible, reusable and makes developing of financial products much easier.
 
 ## Overall design
 
-The overall idea is to have the entire system in different layers, each layer is consisted of its own parts. We will have 4 layers built into the system.
+The overall idea is to have the entire system in different layers, each layer consists of its own parts. We will have four layers built into the system.
 
 #### Layer 1: MOT
 
@@ -32,11 +32,11 @@ The overall idea is to have the entire system in different layers, each layer is
 
 #### Layer 2: Core Components
 
-The components are highly reusable ones in all financial products / applications. It starts from the ExchangeComponent, RiskControlComponent, WhitelistComponent to WithdrawComponent, etc. These can be used from different kinds of indices or funds, also the further products on our road map, like lending, options and futures.
+The components are highly reusable ones in all financial products / applications. Each of them should have its own speciality in its own area such as exchange components, fee caculators, etc. These can be used for different kinds of indices or funds, as well as the further products on our road map, like lending, options and futures.
 
 #### Layer 3: Financial Protocols
 
-​ This layer is focusing on more specific protocol level, it takes different components from layer 2 according to its own needs, just like building a house taking different parts. If you need to charge fees for your fund, just connect to a Chargeable component, and the fee amount is already calculated for you. This makes it so easy to create financial protocols with only having to focus on the specific business logic instead of worrying about how to build the fundamental components like selling tokens, whitelist, etc.
+​ This layer is focusing on more specific protocol level, it takes different components from layer 2 according to its own needs, just like building a house takes different parts. If you need to charge fees for your fund, just connect to a fee component, and the fee amount is already calculated for you. This makes it so easy to create financial protocols with only having to focus on the specific business logic instead of worrying about how to build the fundamental components such as selling tokens, whitelist, etc.
 
 #### Layer 4: Financial Applications
 
@@ -64,13 +64,13 @@ After the fund template becomes available on Olympus Template available, on the 
 
 ![Fund Manager](../assets/Fund-Manager.png)
 
-When the fund instance is deployed to Ethereum, it registers to Olympus Marketplace, thus it's also available to its potential investors from different clients such as Olympus App / Portal or 3rd-party implementations like wallets. The investors can choose to invest on this fund instance by simply clicking the buy button on the client app / portal, then it interacts with the fund instance itself. Thanks for the base template, it implements the ERC20 standards, so investor automatically gets his fund token back to the address he specified.
+When the fund instance is deployed to Ethereum, it registers to Olympus Marketplace, thus it's also available to its potential investors from different clients such as Olympus App / Portal or 3rd-party implementations like wallets. The investors can choose to invest on this fund instance by simply clicking the buy button on the client app / portal, then it interacts with the fund instance itself. Thanks to the base template, it implements the ERC20 standards, so investor automatically gets his fund token back to the address he specified.
 
 ![Investor](../assets/Investor.png)
 
 ## Example workflow
 
-Let's take a look what happens from system's respective from different user cases to show how the Fund instance communicates with the core components.
+Let's take a look what happens from different perspectives from different user cases to show how the Fund instance communicates with core components.
 
 When the fund template is created, it can hold different components and when the fund instance is initialized, the fund communicates with the specific components depending on what the action is. The components are highly reusable and can serve multiple contracts. In this case, the sample fund template uses whitelist, risk-control, withdrawal and exchange components.
 
@@ -186,9 +186,9 @@ MOT plays a very important role in the new system, it's designated to be the cur
 
 Each component has its own fee model, base on practice, there are different model for different types of components.
 
-1.  Base on transaction amount.
-2.  Base on subscription.
-3.  Base on calls.
+1.  Based on transaction amount.
+2.  Based on subscription.
+3.  Based on calls.
 
 It seems only Exchange component fits on first model, and the rest can be neither second or third. All the fee charged needs to be paid by MOT.
 
