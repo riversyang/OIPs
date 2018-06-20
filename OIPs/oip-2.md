@@ -14,6 +14,8 @@ Jerome Chen created: 2018-06-14, last updated:2018-06-20
 
 ### 6. Fee model and MOT usage
 
+
+
 ## Background
 
 Olympus Labs is a blockchain financial ecosystem centered around the Olympus Protocol for the decentralized creation of cryptocurrency-based financial products.
@@ -21,6 +23,8 @@ Olympus Labs is a blockchain financial ecosystem centered around the Olympus Pro
 We provide a web portal, SDKs, and APIs for financial product creators from both tech and non-tech backgrounds to easily create financial products for cryptocurrency investors.
 
 Along with the development of the platform, it turns out the [original architecture](https://github.com/Olympus-Labs/OIPs/blob/master/OIPs/oip-1.md) built before no longer supports the further development of the system, thus we need to have a new architecture of the financial component based, which is highly extensible, reusable and makes developing of financial products much easier.
+
+
 
 ## Overall design
 
@@ -50,17 +54,17 @@ The diagram is described as below:
 
 Let's get into an example to see how it works in the ecosystem. We are involving 3 users here:
 
-1.  Fund manager
+1.  Financial smart contract developer
 
-2.  A financial smart contract developer
+2.  Fund manager
 
-3.  Fund investors.
+3.  Fund investor
 
-Firstly, a financial smart contract developer sees the opportunity of developing financial products in Olympus ecosystem, so he uses his expertise of finance combining with the highly reusable components and the base templates provided by OlympusLabs to create his own Fund product, and then he can register his fund template to Olympus Template gallery. Developer can decide what he wants for his fee part if any fund manager wants to use this to create their financial products.
+Firstly, a financial smart contract developer sees the opportunity of developing financial products in Olympus ecosystem, so he uses his expertise of finance combining with the highly reusable components and the base templates provided by OlympusLabs to create his own Fund product, and then he can register his fund template to Olympus Template Gallery. Developer can decide what he wants for his fee part if any fund manager wants to use this to create their financial products.
 
 ![Developer](../assets/Developer.png)
 
-After the fund template becomes available on Olympus Template available, on the Fund manager portal, the fund managers will be able to see its information including descriptive name, supported features, etc. They can choose this template to create their own fund instance after certain confirmation depending on how the fund provides. The fund manager will use the portal to do the operations such as buying / selling / withdrawal, etc.
+After the fund template becomes available on Olympus Template Gallery, on the Fund manager portal, the fund managers will be able to see its information including descriptive name, supported features, etc. They can choose this template to create their own fund instance after certain configurations depending on how the fund provides. The fund manager will use the portal to do the operations such as buying / selling / withdrawal, etc.
 
 ![Fund Manager](../assets/Fund-Manager.png)
 
@@ -68,13 +72,19 @@ When the fund instance is deployed to Ethereum, it registers to Olympus Marketpl
 
 ![Investor](../assets/Investor.png)
 
-## Example workflow
+
+
+## Communication between protocols and components
 
 Let's take a look what happens from different perspectives from different user cases to show how the Fund instance communicates with core components.
 
-When the fund template is created, it can hold different components and when the fund instance is initialized, the fund communicates with the specific components depending on what the action is. The components are highly reusable and can serve multiple contracts. In this case, the sample fund template uses whitelist, risk-control, withdrawal and exchange components.
+When the fund template is created, it can hold different components and when the fund instance is initialized, the fund communicates with the specific components depending on what the action is. The components are highly reusable and can serve multiple contracts. In this case, the sample fund template uses whitelist, risk-control, withdrawal and exchange components. (Figures below are just for explaining.)
 
 ![Example investement](../assets/Example-investement.png)
+
+
+
+
 
 # Interfaces
 
@@ -179,6 +189,8 @@ contract FundInterface is DerivativeInterface {
         public returns(bool success);
 }
 ```
+
+
 
 ## Fee model and MOT usage
 
