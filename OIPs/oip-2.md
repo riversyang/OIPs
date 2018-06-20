@@ -46,8 +46,6 @@ The diagram is described as below:
 
 ![Application Layers](../assets/Application-Layers.png)
 
-
-
 ## Example workflow
 
 Let's get into an example to see how it works in the ecosystem. We are involving 3 users here:
@@ -192,6 +190,8 @@ Each component has its own fee model, base on practice, there are different mode
 2.  Based on subscription.
 3.  Based on calls.
 
-It seems only Exchange component fits on first model, and the rest can be neither second or third. All the fee charged needs to be paid by MOT.
+It seems only Exchange component fits on first model, and the rest can be neither second or third.
 
-By doing this, the fee charged from the end-users will be removed, and only the users for the component (Fund, Index) will be charged.
+All the fee charged / redeemed can be paid by either Ether or MOT, fees paid with MOT will get 50% discount to encourge MOT usage in Olympus ecosystem.
+
+By doing this, the fee charged from the end-users will be removed, and only the users of the component (Fund, Index) will be charged.
