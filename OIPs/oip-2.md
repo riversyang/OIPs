@@ -12,73 +12,83 @@ Jerome Chen created: 2018-06-14, last updated:2018-06-20
 
 ### 5. Interfaces
 
-### 6. Fee model and MOT usage
+### 6. MOT Tokenomics
 
 
 
 ## Background
 
-Olympus Labs is a blockchain financial ecosystem centered around the Olympus Protocol for the decentralized creation of cryptocurrency-based financial products.
+Olympus Labs is a protocol for developing tokenized cryptocurrency financial products such as indices, funds, lending products, futures, options, and more. We build the core components of financial products, such as exchange, rebalance, and fee calculation, and financial products can be created by assembling these core components.
 
-We provide a web portal, SDKs, and APIs for financial product creators from both tech and non-tech backgrounds to easily create financial products for cryptocurrency investors.
+Olympus Labs aims to power the next generation fintech DApp ecosystem through the Olympus Protocol. We provide APIs/SDKs for developers and existing applications to integrate our protocol and incorporate tokenized financial products and services to their users, both investors and investment managers. 
 
-Along with the development of the platform, it turns out the [original architecture](https://github.com/Olympus-Labs/OIPs/blob/master/OIPs/oip-1.md) built before no longer supports the further development of the system, thus we need to have a new architecture of the financial component based, which is highly extensible, reusable and makes developing of financial products much easier.
+A new architecture based on modularized and layered design thinking is needed in order to support such an ecosystem. Therefore, the [original architecture](https://github.com/Olympus-Labs/OIPs/blob/master/OIPs/oip-1.md) needs to be upgraded. This document lays out the new architecture, which is highly reusable, extensible, and scalable, and easy for developers build and integrate. 
 
 
 
 ## Overall design
 
-The overall idea is to have the entire system in different layers, each layer consists of its own parts. We will have four layers built into the system.
+The new architecture takes on a layered design, with each layer being built around the layer within. There are 4 layers in the Olympus Ecosystem, with each inner layer performing functionalities that support the development of each outer layer.
+
 
 #### Layer 1: MOT
 
-​ MOT is in the very core of the entire ecosystem which will be involved into all the modules / interactions.
+The first layer of the ecosystem is MOT, the native token in the Olympus Ecosystem. MOT is a utility token used for accessing Olympus core components.
 
 #### Layer 2: Core Components
 
-The components are highly reusable ones in all financial products / applications. Each of them should have its own speciality in its own area such as exchange components, fee caculators, etc. These can be used for different kinds of indices or funds, as well as the further products on our road map, like lending, options and futures.
+The second layer of the ecosystem is Olympus core components. We have conducted a deep analysis of the financial products that exist in the financial world and have reduced them to their core functionalities. These core functionalities are common across various financial products and thus we have developed highly reusable functionality modules, what we call core components. Each core component performs an essential function, such as allowing the buying/selling of tokens, calculating the management fee, conducting risk control, amongst others. The key benefit of these core components is that they can be easily assembled together to create new types of financial products such as indices, funds, lending products, options, and futures, and enables the creation of novel financial products that do not yet exist.
 
 #### Layer 3: Financial Protocols
 
-​ This layer is focusing on more specific protocol level, it takes different components from layer 2 according to its own needs, just like building a house takes different parts. If you need to charge fees for your fund, just connect to a fee component, and the fee amount is already calculated for you. This makes it so easy to create financial protocols with only having to focus on the specific business logic instead of worrying about how to build the fundamental components such as selling tokens, whitelist, etc.
+​The third layer of the ecosystem is Financial Protocols. This layer consists of the financial product templates created using the core components, and thus we see how an inner layer supports the development of an outer layer. There are two types of financial product templates that form this layer. The first type of financial product templates is the base template for each financial product type, for example the base template for an index. It is the most basic template for that product type and serves as the standard. All templates of that type of financial product must meet the requirements of the base template in order to qualify as a template of that financial product. 
+
+The second type of financial product templates is custom templates. These templates can be created either by taking a base template and adding/modifying core components or by assembling core components from the ground up. Financial product templates can be easily created in this manner as the product creator only needs to focus on the product logic without having to think about the development. For example, if the product creator is creating a fund and need to calculate his/her management fee, he/she can do so by simply integrating the fee calculation component, without having to build that functionality him/herself.
 
 #### Layer 4: Financial Applications
 
-​ Outside of the protocol is the applications layer. This is facing to organizations / end users, it includes Olympus App, Financial management portal, a DEX or a marketplace of financial products. It connects to the protocol to perform certain operations to serve customer's needs.
+The fourth layer of the ecosystem is financial applications, or the DApp layer. The DApp layer of financial applications will be powered by the Olympus Protocol. We envision two main categories of DApps in this layer: 1. DApps that serve producers of financial products (investment managers and product creators) and 2. DApps that serve consumers of financial products (consumers and investors). The Olympus Protocol supports fintech applications such as wallets, portfolio tracking applications, investment manager applications for creating and managing financial products, financial product marketplaces, financial product exchanges, and much more. Through our APIs/SDKs, both existing applications and developers building new applications can integrate Olympus Protocol to provide the next generation of financial product offerings and services to their users.
 
-The diagram is described as below:
+The following diagram shows the 4 layers of the Olympus Ecosystem:
+
 
 ![Application Layers](../assets/Application-Layers.png)
 
 ## Example workflow
 
-Let's get into an example to see how it works in the ecosystem. We are involving 3 users here:
+Let's use an example to see how the ecosystem works. Here we define 3 user roles:
 
-1.  Financial smart contract developer
+1.  Financial product template developer
 
 2.  Fund manager
 
 3.  Fund investor
 
-Firstly, a financial smart contract developer sees the opportunity of developing financial products in Olympus ecosystem, so he uses his expertise of finance combining with the highly reusable components and the base templates provided by OlympusLabs to create his own Fund product, and then he can register his fund template to Olympus Template Gallery. Developer can decide what he wants for his fee part if any fund manager wants to use this to create their financial products.
+To start, a smart contract developer sees the opportunity in developing financial products for the Olympus Ecosystem, so he/she uses the Olympus core components and the base financial product template for a fund to create his own fund template, heretofore known as “Own Fund Template”, thus becoming a financial product template developer. He/she then registers Own Fund Template in the Olympus Labs’ Template List, a list of all financial product templates built on the Olympus Protocol that have chosen to register.  
+
 
 ![Developer](../assets/Developer.png)
 
-After the fund template becomes available on Olympus Template Gallery, on the Fund manager portal, the fund managers will be able to see its information including descriptive name, supported features, etc. They can choose this template to create their own fund instance after certain configurations depending on how the fund provides. The fund manager will use the portal to do the operations such as buying / selling / withdrawal, etc.
+Now that Own Fund Template is in the Template List, it can be made available to fund managers through a DApp that allows fund managers to create and manage funds, heretofore known as “Management Portal”. In the Management Portal, the fund manager can see a range of fund templates available and the features and customizations that each template supports. Let’s assume that he likes the features of Own Fund Template, then he can choose it, add in his specifications, such as the management fee percentage that he will charge, and deploy an instance of Own Fund Template. The product that he deploys is his fund, specifically a tokenized fund in the form of a smart contract, heretofore known as “Own Fund Instance”. He then manages this fund/smart contract by using the Management Portal, conducting operations such as buying/selling cryptocurrencies.
+
 
 ![Fund Manager](../assets/Fund-Manager.png)
 
-When the fund instance is deployed to Ethereum, it registers to Olympus Marketplace, thus it's also available to its potential investors from different clients such as Olympus App / Portal or 3rd-party implementations like wallets. The investors can choose to invest on this fund instance by simply clicking the buy button on the client app / portal, then it interacts with the fund instance itself. Thanks to the base template, it implements the ERC20 standards, so investor automatically gets his fund token back to the address he specified.
+When Own Fund Instance is deployed on the Ethereum Network, it registers to the Olympus Products List, a list of all tokenized financial products based on the Olympus Protocol that have chosen to register. Own Fund Instance can now be made available for investors to invest through any consumer facing DApp such as wallets.
+
+The fund investor can choose to invest in this fund by simply clicking the buy button on the client app / portal. The fund investor sends his investment, for example ETH, and receives the fund’s tokens. Since the fund’s tokens are a tokenized product that meets ERC20 standards, the fund’s tokens will automatically be sent to the fund investor’s wallet.
+
 
 ![Investor](../assets/Investor.png)
 
 
 
-## Communication between protocols and components
+## Communication between core components and financial protocols (financial product templates)
 
-Let's take a look what happens from different perspectives from different user cases to show how the Fund instance communicates with core components.
+Let’s take a look at the communication between the core components and the financial product template by using the Own Fund Instance as an example, and do so from both the perspective of the fund manager and the fund investor.
 
-When the fund template is created, it can hold different components and when the fund instance is initialized, the fund communicates with the specific components depending on what the action is. The components are highly reusable and can serve multiple contracts. In this case, the sample fund template uses whitelist, risk-control, withdrawal and exchange components. (Figures below are just for explaining.)
+Own Fund Instance, which is based on the Own Fund Template, consists of multiple core components. In this example, it consists of the whitelist, risk-control, redeem, and exchange components. The figures below illustrates the interactions that occur based on some example actions performed by the fund manager and fund investor.
+
 
 ![Example investement](../assets/Example-investement.png)
 
@@ -88,13 +98,15 @@ When the fund template is created, it can hold different components and when the
 
 # Interfaces
 
-Let's take a look at the technical level of how the interfaces are and how a fund template is constructed.
+This section explains how a financial product template is constructed from a technical perspective.
 
-First, all components implement ComponentInterface which basically describes itself, what the name is, which version it is and what it can do.
+1. Component Interface
+First, each core component implements its own ComponentInterface, which describes the component and its function.
+
 
 ![Component Interfaces](../assets/Component-Interfaces.png)
 
-The definition is like below
+Below is a sample definition
 
 ```javascript
 pragma solidity 0.4.24;
@@ -108,11 +120,17 @@ contract ComponentInterface {
 }
 ```
 
-On another hand, a financial product contains its own logic and a set of components. Base on that, we have defined the Derivative 1.0 interface.
+2. Derivative Interface
+
+As financial product templates are constructed by assembling core components, we have defined the Derivative Interface as follows:
+
 
 ![Derivative Interfaces](../assets/Derivative-Interfaces.png)
 
-The component container interface enables any contract implements it has the ability to set components dynamically which makes it powerful. Take an example, when a fund is created with a feature with basic monthly fee charged, later on, you want to change it to percentage base on the transaction amount, thanks to this, you just need to call setComponent function to change to another component which supports this and implements the same Chargeable interface.
+3. Component Container Interface
+
+The component container interface enables financial products to dynamically interchange core components that make up that product, which is a very powerful feature. Core components of the same type, for example calculating management fees, can be easily exchanged. Let’s take the management fee that fund managers charge in return for managing the fund as an example. Let’s say that when the fund was created, it had used a fee component that charged a fixed monthly management fee. Later on, the fund manager wants to charge the management fee based on a percentage of assets. This can be easily done by simply switching the original fee component to a new fee component by calling the setComponent function. This gives unparalleled flexibility to investment managers to create, manage, and adapt their investment funds and investment products.
+
 
 ```javascript
 pragma solidity 0.4.24;
@@ -128,7 +146,7 @@ contract ComponentContainerInterface {
 }
 ```
 
-The Derivative interface implements ERC20, Ownable and ComponentContainerInterface. The ERC20 gives the derivative as a standard token and can be traded at any exchanges. The ownable makes the creator the permission control to do advanced operations such as setting up components.
+The Derivative Interface implements ERC20 standard, Ownable component, and the ComponentCointainerInterface. Implementation of the ERC20 standard allows interoperability of the tokenized product as it can be traded like any ERC20 token and can be stored in wallets or be listed on exchanges. The Ownable component gives the creator the permission control to conduct advanced operations such as setting up components.
 
 ```javascript
 pragma solidity 0.4.24;
@@ -158,7 +176,8 @@ contract DerivativeInterface is ERC20, Ownable, ComponentContainerInterface {
 }
 ```
 
-Base on the Derivative interface we can de derive to multiple protocols for different tokenized derivatives like Fund, Index, or stable coin, lending, future or options. An example is like described below:
+The Derivative Interface is powerful because it can be used to derive protocols for a number of tokenized financial products, such as fund, index, stable coin, lending, future or option. Below is an example implementation. 
+
 
 ```javascript
 pragma solidity 0.4.24;
@@ -192,18 +211,18 @@ contract FundInterface is DerivativeInterface {
 
 
 
-## Fee model and MOT usage
+## MOT Tokenomics
 
-MOT plays a very important role in the new system, it's designated to be the currency in Olympus ecosystem. Without fee model, the system is not healthy to continue developing.
+MOT plays a critical role in the system architecture as it is the utility token used to access the Olympus core components. Each core component has its own fee model. There are three main types of fee models: 
 
-Each component has its own fee model, base on practice, there are different model for different types of components.
+1.  Based on transaction volume
+2.  Based on subscription
+3.  Based on calls
 
-1.  Based on transaction amount.
-2.  Based on subscription.
-3.  Based on calls.
+The exchange core component fits into the first fee model while the rest of the components can adopt either the second or third fee model. 
 
-It seems only Exchange component fits on first model, and the rest can be neither second or third.
+A key implication of building the fee and the usage of MOT into the core components is that the value of MOT will be tied directly to the success of Olympus Labs, specifically the success of the Olympus Protocol and the Olympus Ecosystem. It means that when a new developer builds a new financial product template or a DApp that integrates the Olympus Protocol, demand for MOT increases. It means that when a wallet offers Olympus products to their users, demand for MOT increases. It means that when investment managers create funds and financial products and offers these products to their investors, the demand for MOT increases. In essence, any development or progress that increases the usage of the Olympus Protocol increases the demand for MOT. 
 
-All the fee charged / redeemed can be paid by either Ether or MOT, fees paid with MOT will get 50% discount to encourge MOT usage in Olympus ecosystem.
+Another benefit to building the fees into the core components and deducting the fees directly from the funds is that no user, neither investment manager nor investor, need to pay any direct fees to be in the Olympus Ecosystem. This simplifies the user experience so that for the users, creating or buying a tokenized Olympus financial product is no different than creating or buying any ERC20 token.
 
-By doing this, the fee charged from the end-users will be removed, and only the users of the component (Fund, Index) will be charged.
+The fees generated from providing the core components will be directed to further development of the project, namely on developing the Olympus Protocol and for building the Olympus Ecosystem, which will in turn generate more demand for MOT, thus creating a virtuous cycle of sustainable development.
