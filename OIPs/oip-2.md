@@ -64,7 +64,7 @@ Let's use an example to see how the ecosystem works. Here we define 3 user roles
 
 3.  Fund investor
 
-To start, a smart contract developer sees the opportunity in developing financial products for the Olympus Ecosystem, so he/she uses the Olympus core components and the base financial product template for a fund to create his own fund template, heretofore known as “Own Fund Template”, thus becoming a financial product template developer. He/she then registers Own Fund Template in the Olympus Labs’ Template List, a list of all financial product templates built on the Olympus Protocol that have chosen to register.  
+To start, a smart contract developer sees the opportunity in developing financial products for the Olympus Ecosystem, so he/she uses the Olympus core components and the base financial product template for a fund to create his own fund template, heretofore known as “Own Fund Template”, thus becoming a financial product template developer. He/she then registers Own Fund Template in the Olympus Labs Template List, a list of all financial product templates built on the Olympus Protocol that have chosen to register.  
 
 
 ![Developer](../assets/Developer.png)
