@@ -1,4 +1,4 @@
-# Olympus Labs: Financial Component Based Architecture Design
+# Olympus Labs: Component-based Financial Products Architecture
 
 Jerome Chen created: 2018-06-14, last updated:2018-06-20
 
